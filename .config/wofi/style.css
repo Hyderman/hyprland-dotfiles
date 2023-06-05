@@ -1,6 +1,6 @@
 window {
     margin: 0px;
-    border: 5px solid #1e1e2e;
+    border: 5px solid #13131e;
     background-color: #cdd6f4;
     border-radius: 15px;
 }
@@ -35,7 +35,7 @@ window {
 
 #outer-box {
     margin: 0px;
-    border: none;
+    border: 2px solid #7d4045;
     border-radius: 15px;
     background-color: #1e1e2e;
 }
