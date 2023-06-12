@@ -5,27 +5,50 @@
     "exclusive": true,
     "passtrough": false,
     "gtk-layer-shell": true,
-    "height": 0,
+    "height": 20,
+    "spacing": 0,
     "modules-left": [
-        "clock",
-        // "cpu",
-        // "memory",
-        "custom/weather",
+        "custom/power_btn",
+        "custom/lock_screen",
         "wlr/workspaces"
     ],
-    "modules-center": ["hyprland/window"],
+    "modules-center": [
+        "idle_inhibitor",
+        "clock",
+        "custom/updates"
+    ],
     "modules-right": [
-        "tray",
-        // "custom/language",
-        "network",
+        "cpu",
         "pulseaudio",
         "pulseaudio#microphone",
-        "custom/notification"
+        "tray",
+        "custom/weather",
+        "custom/power_profile",
+        // "battery",
+        "custom/notification",
     ],
 
-    "hyprland/window": {
-        "format": "{}"
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰛐",
+            "deactivated": "󰛑"
+        },
+        "tooltip": true
     },
+
+    "custom/power_btn": {
+        "format": "",
+        "on-click": "sh -c '(sleep 0.1; wlogout --protocol layer-shell -b 5 -T 400 -B 400)' & disown",
+        "tooltip": false
+    },
+
+    "custom/lock_screen": {
+        "format": "",
+        "on-click": "sh -c '(sleep 0.1; swaylock -i ~/Pictures/Backgrounds/wallhaven-vqoo1p.jpg)' & disown ",
+        "tooltip": false
+    },
+
     "wlr/workspaces": {
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
@@ -45,11 +68,6 @@
           }
     },
 
-    "custom/updates": {
-        "exec": "(paru -Qua) | wc -l",
-        "interval": 7200,
-        "format": " {}"
-    },
 
     "custom/weather": {
 	    "format": "{}°C",
@@ -82,22 +100,7 @@
 
     "tray": {
         "icon-size": 13,
-        "tooltip": false,
         "spacing": 10
-    },
-    "clock": {
-        "format": "{: %R   %d/%m}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
-    },
-
-    "network": {
-	// "interface": "wlp2*", // (Optional) To force the use of this interface
-	"format-wifi": "{essid} ({signalStrength}%) ",
-	"format-ethernet": "{ipaddr}/{cidr} ",
-	"tooltip-format": "{ifname} via {gwaddr} ",
-	"format-linked": "{ifname} (No IP) ",
-	"format-disconnected": "Disconnected ⚠",
-	"format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
 
     "cpu": {
@@ -106,7 +109,7 @@
         "max-length": 10,
         "format-alt-click": "click-right",
         "format-alt": " {usage}%",
-        "on-click": "wezterm start -- hyprctl dispatch fullscreen 1; btop"
+        "on-click": "wezterm start btop"
     },
 
     "pulseaudio": {

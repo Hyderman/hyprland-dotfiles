@@ -19,7 +19,7 @@
   "notification-body-image-height": 100,
   "notification-body-image-width": 200,
   "timeout": 10,
-  "timeout-low": 2,
+  "timeout-low": 5,
   "timeout-critical": 0,
   "notification-window-width": 500,
   "keyboard-shortcuts": true,
@@ -44,7 +44,7 @@
     },
     "title": {
       "text": "Notifications",
-      "clear-all-button": false,
+      "clear-all-button": true,
       "button-text": "Clear All"
     },
     "dnd": {
