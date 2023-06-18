@@ -14,7 +14,6 @@
     ],
     "modules-center": [
         "idle_inhibitor",
-        "clock",
         "custom/updates"
     ],
     "modules-right": [
@@ -22,10 +21,10 @@
         "pulseaudio",
         "pulseaudio#microphone",
         "tray",
-        "custom/weather",
         "custom/power_profile",
         // "battery",
         "custom/notification",
+        "clock"
     ],
 
     "idle_inhibitor": {
@@ -68,15 +67,6 @@
           }
     },
 
-
-    "custom/weather": {
-	    "format": "{}°C",
-	    "tooltip": true,
-	    "interval": 3600,
-	    "exec": "wttrbar --date-format '%d/%m' --location Poitiers",
-	    "return-type": "json"
-    },
-
     "custom/notification": {
         "tooltip": false,
         "format": "{icon}",
@@ -98,6 +88,13 @@
         "escape": true
     },
 
+	"clock": {
+		"format": " {:%H:%M}",
+		"tooltip": "true",
+        	"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        	"format-alt": " {:%d/%m}"
+	},
+
     "tray": {
         "icon-size": 13,
         "spacing": 10
@@ -112,6 +109,14 @@
         "on-click": "wezterm start btop"
     },
 
+    "custom/updates": {
+        "format": "{}",
+        "exec": "~/.config/waybar/scripts/update-sys",
+        "on-click": "~/.config/waybar/scripts/update-sys update",
+        "interval": 300,
+        "tooltip": true
+    },
+
     "pulseaudio": {
         "format": "{icon}",
         "tooltip": false,
@@ -119,8 +124,8 @@
         "on-click": "~/.config/waybar/scripts/volume --toggle",
         "on-scroll-up": "~/.config/waybar/scripts/volume --inc",
         "on-scroll-down": "~/.config/waybar/scripts/volume --dec",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-bluetooth": "{icon}",
+        "format-bluetooth-muted": " {icon}",
         "scroll-step": 5,
         "format-icons": {
             "headphone": "",

@@ -8,7 +8,8 @@
 }
 
 window#waybar {
-    background: rgba(21, 18, 27, 0.7);
+    background: rgba(21, 18, 27, 0.9);
+    /* border-bottom: 1px solid #282828; */
     color: #f6f7fc;
 }
 
@@ -51,13 +52,11 @@ tooltip label{
 #custom-light_dark,
 #custom-power_btn,
 #custom-power_profile,
-#custom-weather,
 #window,
 #cpu,
 #disk,
 #custom-updates,
 #memory,
-#clock,
 #battery,
 #pulseaudio,
 #network,
@@ -65,6 +64,8 @@ tooltip label{
 #temperature,
 #workspaces,
 #idle_inhibitor,
+
+
 #button {
     background: rgba(21, 18, 27, 0);
     opacity: 1;
@@ -82,4 +83,18 @@ tooltip label{
     border-radius: 10px;
     margin-left: 0px;
     margin-right: 0px;
+}
+
+#clock {
+    color: #F6F7FC;
+    background-color: #7d4045;
+    border-radius: 0px 0px 0px 24px;
+    padding-left: 13px;
+    padding-right: 15px;
+    margin-right: 0px;
+    margin-left: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    /*border-left: solid 1px #282738;*/
 }
