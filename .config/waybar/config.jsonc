@@ -111,8 +111,8 @@
 
     "custom/updates": {
         "format": "{}",
-        "exec": "~/.config/waybar/scripts/update-sys",
-        "on-click": "~/.config/waybar/scripts/update-sys update",
+        "exec": "~/.config/scripts/waybarScripts/update-sys",
+        "on-click": "~/.config/scripts/waybarScripts/update-sys update",
         "interval": 300,
         "tooltip": true
     },
@@ -121,9 +121,9 @@
         "format": "{icon}",
         "tooltip": false,
         "format-muted": "",
-        "on-click": "~/.config/waybar/scripts/volume --toggle",
-        "on-scroll-up": "~/.config/waybar/scripts/volume --inc",
-        "on-scroll-down": "~/.config/waybar/scripts/volume --dec",
+        "on-click": "~/.config/scripts/waybarScripts/volume --toggle",
+        "on-scroll-up": "~/.config/scripts/waybarScripts/volume --inc",
+        "on-scroll-down": "~/.config/scripts/waybarScripts/volume --dec",
         "format-bluetooth": "{icon}",
         "format-bluetooth-muted": " {icon}",
         "scroll-step": 5,
@@ -142,9 +142,9 @@
         "tooltip": false,
         "format-source": "",
         "format-source-muted": "",
-        "on-click": "~/.config/waybar/scripts/volume --toggle-mic",
-        "on-scroll-up": "~/.config/waybar/scripts/volume --mic-inc",
-        "on-scroll-down": "~/.config/waybar/scripts/volume --mic-dec",
+        "on-click": "~/.config/scripts/waybarScripts/volume --toggle-mic",
+        "on-scroll-up": "~/.config/scripts/waybarScripts/volume --mic-inc",
+        "on-scroll-down": "~/.config/scripts/waybarScripts/volume --mic-dec",
         "scroll-step": 5
     }
 }
