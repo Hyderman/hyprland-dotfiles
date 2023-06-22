@@ -1,0 +1,6 @@
+
+2023/06/22 (17:49:50) | ===> btop++ v.1.2.13
+2023/06/22 (17:49:50) | ERROR: Invalid hex value: 89dceb
+
+# Process box color gradient for threads, mem and cpu usage (Sapphire -> Mauve)
+theme[process_start]=

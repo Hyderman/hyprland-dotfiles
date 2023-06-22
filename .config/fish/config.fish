@@ -2,8 +2,7 @@ if status is-interactive
 	# Commands to run in interactive sessions can go here
     set -U fish_greeting
 	starship init fish | source
-	alias r="ranger"
-    bind \ce "ranger"
+    bind \ce 'set old_tty (stty -g); stty sane; lfcd; stty $old_tty; commandline -f repaint'
 end
 
 fish_add_path /home/hyderman/.local/bin
