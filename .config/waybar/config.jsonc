@@ -113,7 +113,7 @@
         "format": "{}",
         "exec": "~/.config/scripts/waybarScripts/update-sys",
         "on-click": "~/.config/scripts/waybarScripts/update-sys update",
-        "interval": 300,
+        "interval": "once",
         "tooltip": true
     },
 

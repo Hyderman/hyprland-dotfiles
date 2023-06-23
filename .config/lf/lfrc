@@ -2,6 +2,8 @@
 set hidden true
 set ignorecase true
 set icons true
+set findlen 0
+set noanchorfind
 
 # Custom Functions
 cmd mkdir ${{
@@ -71,12 +73,19 @@ map O $mimeopen --ask $f
 # use either file extensions and/or mime types here. Below uses an editor for
 # text files and a file opener for the rest.
 cmd open &{{
-    case $(file --mime-type -Lb $f) in
-        text/*) lf -remote "send $id \$$EDITOR \$fx";;
-        *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;;
-    esac
+	mimetype=$(file --brief --dereference --mime-type $f)
+	defapp=$(xdg-mime query default $mimetype)
+	case "$defapp" in 
+	nvim.desktop)
+        lf -remote "send $id \$nvim $f"
+		;;
+	vim.desktop)
+        lf -remote "send $id \$vim $f"
+		;;
+	*)
+		$OPENER $f
+	esac
 }}
-
 # mkdir command. See wiki if you want it to select created dir
 map a :push %mkdir<space>
 

@@ -28,7 +28,7 @@ return {
             lsp.ensure_installed({
                 "clangd",
                 "lua_ls",
-                "neocmake",
+                -- "neocmake",
             })
 
             require("lspconfig").lua_ls.setup {

@@ -2,8 +2,8 @@
 Name=NeoVim
 Categories=;
 Comment=Edit file in NeoVim
-Exec=wezterm start nvim %F 
-Terminal=false
+Exec=nvim %F 
+Terminal=true
 Type=Application
 Keywords=Text;editor;
 Icon=nvim
