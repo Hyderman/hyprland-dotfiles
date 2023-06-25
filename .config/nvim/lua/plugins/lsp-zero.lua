@@ -25,6 +25,16 @@ return {
                 lsp.default_keymaps({ buffer = bufnr })
             end)
 
+            local cmp = require('cmp')
+            local cmp_action = require('lsp-zero').cmp_action()
+
+            cmp.setup({
+                mapping = {
+                    -- `Enter` key to confirm completion
+                    ['<C-f>'] = cmp.mapping.confirm({ select = true}),
+                }
+            })
+
             lsp.ensure_installed({
                 "clangd",
                 "lua_ls",

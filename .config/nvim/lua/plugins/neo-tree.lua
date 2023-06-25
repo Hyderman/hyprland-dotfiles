@@ -6,7 +6,7 @@ return {
         "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
         "MunifTanjim/nui.nvim",
     },
-    init = function ()
+    init = function()
         vim.g.loaded_netrw = 1
         vim.g.loaded_netrwPlugin = 1
     end,
@@ -27,6 +27,7 @@ return {
         -- in the form "LspDiagnosticsSignWarning"
 
         require("neo-tree").setup({
+            vim.keymap.set("n", "ge", "<Cmd>Neotree focus reveal<Cr>"),
             close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
             popup_border_style = "rounded",
             enable_git_status = true,
@@ -133,12 +134,30 @@ return {
                     ["<cr>"] = "open",
                     ["<esc>"] = "revert_preview",
                     ["P"] = { "toggle_preview", config = { use_float = true } },
-                    ["l"] = "focus_preview",
+                    ["h"] = function(state)
+                        local node = state.tree:get_node()
+                        if node.type == 'directory' and node:is_expanded() then
+                            require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+                        else
+                            require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+                        end
+                    end,
+                    ["l"] = function(state)
+                        local node = state.tree:get_node()
+                        if node.type == 'directory' then
+                            if not node:is_expanded() then
+                                require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+                            elseif node:has_children() then
+                                require 'neo-tree.ui.renderer'.focus_node(state, node:get_child_ids()[1])
+                            end
+                        end
+                    end,
+                    -- ["l"] = "focus_preview",
                     ["S"] = "open_split",
                     ["s"] = "open_vsplit",
                     -- ["S"] = "split_with_window_picker",
                     -- ["s"] = "vsplit_with_window_picker",
-                    ["t"] = "open_tabnew",
+                    -- ["t"] = "open_tabnew",
                     -- ["<cr>"] = "open_drop",
                     -- ["t"] = "open_tab_drop",
                     ["w"] = "open_with_window_picker",
@@ -220,7 +239,7 @@ return {
                         ["D"] = "fuzzy_finder_directory",
                         ["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
                         -- ["D"] = "fuzzy_sorter_directory",
-                        ["f"] = "filter_on_submit",
+                        -- ["f"] = "filter_on_submit",
                         ["<c-x>"] = "clear_filter",
                         ["[g"] = "prev_git_modified",
                         ["]g"] = "next_git_modified",
