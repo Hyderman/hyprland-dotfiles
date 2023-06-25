@@ -8,16 +8,16 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
-	config.font = wezterm.font("FiraMono Nerd Font", {weight="Regular", stretch="Normal", style="Normal"}) -- /usr/share/fonts/OTF/FiraMonoNerdFont-Regular.otf, FontConfig
+    config.font = wezterm.font("FiraMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" }) -- /usr/share/fonts/OTF/FiraMonoNerdFont-Regular.otf, FontConfig
 elseif wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	config.adjust_window_size_when_changing_font_size = false
-	config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
-	config.default_prog = { "pwsh.exe" }
-	config.font = wezterm.font("FiraCode NFM", { weight = "Medium", stretch = "Normal", style = "Normal" }) 
+    config.adjust_window_size_when_changing_font_size = false
+    config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+    config.default_prog = { "pwsh.exe" }
+    config.font = wezterm.font("FiraCode NFM", { weight = "Medium", stretch = "Normal", style = "Normal" })
 end
 config.window_frame = {
-	active_titlebar_bg = "#13131e", 
-	inactive_titlebar_bg = "#13131e",
+    active_titlebar_bg = "#13131e",
+    inactive_titlebar_bg = "#13131e",
 }
 config.color_scheme = 'Catppuccin Mocha'
 config.colors = {
@@ -36,7 +36,43 @@ config.colors = {
         }
     }
 }
-config.keys = {}
+config.keys = {
+    {
+        key = 'w',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.CloseCurrentPane { confirm = true },
+    },
+    {
+        key = 'H',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.AdjustPaneSize { 'Left', 5 },
+    },
+    {
+        key = 'J',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.AdjustPaneSize { 'Down', 5 },
+    },
+    {
+        key = 'K',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.AdjustPaneSize { 'Up', 5 }
+    },
+    {
+        key = 'L',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.AdjustPaneSize { 'Right', 5 },
+    },
+    {
+        key = '_',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.SplitHorizontal{ domain = 'CurrentPaneDomain' },
+    },
+    {
+        key = '+',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.SplitVertical{ domain = 'CurrentPaneDomain' },
+    },
+}
 
 for i = 1, 8 do
     -- CTRL+ALT + number to move to that position
