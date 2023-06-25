@@ -3,10 +3,9 @@
 # Original script by @speltriao on GitHub
 # https://github.com/speltriao/Pacman-Update-for-GNOME-Shell
 
-
 # Calculate updates for each service
 AUR=$(paru -Qua | wc -l)
-OFFICIAL=$(paru -Qu | wc -l)
+OFFICIAL=$(checkupdates | wc -l)
 
 # Case/switch for each service updates
 case $1 in
@@ -17,6 +16,7 @@ esac
 # If the parameter is "update", update all services
 if [ "$1" = "update" ]; then
     wezterm start -- sh -c 'paru'
+    echo ""
 fi
 
 # If there aren't any parameters, return the total number of updates
