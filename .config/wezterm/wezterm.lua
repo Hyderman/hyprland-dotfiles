@@ -38,6 +38,18 @@ config.colors = {
 }
 config.keys = {
     {
+        key = 't',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action.SpawnTab 'CurrentPaneDomain',
+    },
+    -- Create a new tab in the default domain
+    {
+        key = 't',
+        mods = 'CTRL|ALT',
+        action = wezterm.action.SpawnTab 'DefaultDomain',
+    },
+
+    {
         key = 'w',
         mods = 'SHIFT|ALT',
         action = wezterm.action.CloseCurrentPane { confirm = true },
@@ -65,12 +77,12 @@ config.keys = {
     {
         key = '_',
         mods = 'SHIFT|ALT',
-        action = wezterm.action.SplitHorizontal{ domain = 'CurrentPaneDomain' },
+        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
     },
     {
         key = '+',
         mods = 'SHIFT|ALT',
-        action = wezterm.action.SplitVertical{ domain = 'CurrentPaneDomain' },
+        action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
     },
 }
 

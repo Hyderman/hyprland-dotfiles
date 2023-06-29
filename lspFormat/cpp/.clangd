@@ -1,0 +1,16 @@
+Diagnostics:
+    ClangTidy:
+        Add: [modernize*, bugprone*, cert*, clang-analyze*, performance*]
+        Remove: [
+        modernize-use-trailing-return-type,
+        modernize-avoid-c-arrays,
+        # performance-no-int-to-ptr,
+        cert-err58-cpp,
+        bugprone-easily-swappable-parameters,
+        modernize-deprecated-headers,
+        modernize-use-nodiscard
+        ]
+        
+CompileFlags:
+    Add: -Wno-unknown-warning-option, 
+    Remove: [-m*, -f*]

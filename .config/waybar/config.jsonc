@@ -44,7 +44,8 @@
 
     "custom/lock_screen": {
         "format": "",
-        "on-click": "sh -c '(sleep 0.1; swaylock -i ~/Pictures/Backgrounds/wallhaven-vqoo1p.jpg)' & disown ",
+        "on-click": "sh -c '(sleep 0.1; ~/.config/scripts/lock)' & disown ",
+
         "tooltip": false
     },
 
@@ -125,7 +126,7 @@
         "on-scroll-up": "~/.config/scripts/waybarScripts/volume --inc",
         "on-scroll-down": "~/.config/scripts/waybarScripts/volume --dec",
         "format-bluetooth": "{icon}",
-        "format-bluetooth-muted": " {icon}",
+        "format-bluetooth-muted": "{icon}",
         "scroll-step": 5,
         "format-icons": {
             "headphone": "",
