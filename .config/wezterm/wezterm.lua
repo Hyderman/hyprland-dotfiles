@@ -84,15 +84,36 @@ config.keys = {
         mods = 'SHIFT|ALT',
         action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
     },
+    {
+        key = 'h',
+        mods = 'CTRL|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Left',
+    },
+    {
+        key = 'l',
+        mods = 'CTRL|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Right',
+    },
+    {
+        key = 'k',
+        mods = 'CTRL|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Up',
+    },
+    {
+        key = 'j',
+        mods = 'CTRL|ALT',
+        action = wezterm.action.ActivatePaneDirection 'Down',
+    },
+
 }
 
-for i = 1, 8 do
-    -- CTRL+ALT + number to move to that position
-    table.insert(config.keys, {
-        key = tostring(i),
-        mods = 'CTRL|ALT',
-        action = wezterm.action.MoveTab(i - 1),
-    })
-end
+-- for i = 1, 8 do
+--     -- CTRL+ALT + number to move to that position
+--     table.insert(config.keys, {
+--         key = tostring(i),
+--         mods = 'CTRL|ALT',
+--         action = wezterm.action.MoveTab(i - 1),
+--     })
+-- end
 
 return config

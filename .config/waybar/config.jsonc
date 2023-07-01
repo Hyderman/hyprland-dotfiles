@@ -13,6 +13,7 @@
         "wlr/workspaces"
     ],
     "modules-center": [
+        "clock",
         "idle_inhibitor",
         "custom/updates"
     ],
@@ -24,7 +25,6 @@
         "custom/power_profile",
         // "battery",
         "custom/notification",
-        "clock"
     ],
 
     "idle_inhibitor": {
@@ -90,10 +90,8 @@
     },
 
 	"clock": {
-		"format": " {:%H:%M}",
-		"tooltip": "true",
-        	"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        	"format-alt": " {:%d/%m}"
+		"format": "{:%a %d %H:%M}",
+		"tooltip": "false",
 	},
 
     "tray": {
@@ -107,7 +105,7 @@
         "max-length": 10,
         "format-alt-click": "click-right",
         "format-alt": " {usage}%",
-        "on-click": "wezterm start btop"
+        "on-click": "hyprctl dispatch exec [float] wezterm start btop"
     },
 
     "custom/updates": {

@@ -27,7 +27,7 @@ tooltip label{
 }
 
 #workspaces button {
-    padding: 5 5px;
+    padding: 4 3px;
     color: #f6f7fc;
     margin-right: 5px;
 }
@@ -35,13 +35,13 @@ tooltip label{
 #workspaces button.active {
     color: #000000;
     background: #7d4045;
-    border-radius: 10px;
+    border-radius: 50%;
 }
 
 #workspaces button:hover {
     background: #11111b;
     color: #cdd6f4;
-    border-radius: 10px;
+    border-radius: 50%;
 }
 
 #custom-notification,
@@ -87,10 +87,6 @@ tooltip label{
 
 #clock {
     color: #F6F7FC;
-    background-color: #7d4045;
-    border-radius: 0px 0px 0px 24px;
-    padding-left: 13px;
-    padding-right: 15px;
     margin-right: 0px;
     margin-left: 10px;
     margin-top: 0px;

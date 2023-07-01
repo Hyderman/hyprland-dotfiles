@@ -22,12 +22,12 @@ return {
         vim.fn.sign_define("DiagnosticSignInfo",
             { text = " ", texthl = "DiagnosticSignInfo" })
         vim.fn.sign_define("DiagnosticSignHint",
-            { text = "", texthl = "DiagnosticSignHint" })
+            { text = " ", texthl = "DiagnosticSignHint" })
         -- NOTE: this is changed from v1.x, which used the old style of highlight groups
         -- in the form "LspDiagnosticsSignWarning"
 
         require("neo-tree").setup({
-            vim.keymap.set("n", "ge", "<Cmd>Neotree focus reveal<Cr>"),
+            vim.keymap.set("n", "ge", "<Cmd>Neotree toggle reveal<Cr>"),
             close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
             popup_border_style = "rounded",
             enable_git_status = true,
