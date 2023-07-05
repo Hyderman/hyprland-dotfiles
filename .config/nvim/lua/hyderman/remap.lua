@@ -7,6 +7,7 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "x", "\"_x")
 vim.keymap.set("x", "<leader>p", "\"_dp")
+vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")

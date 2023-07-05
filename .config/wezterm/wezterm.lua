@@ -7,6 +7,7 @@ local config = {}
 if wezterm.config_builder then
     config = wezterm.config_builder()
 end
+
 if wezterm.target_triple == "x86_64-unknown-linux-gnu" then
     config.font = wezterm.font("FiraMono Nerd Font", { weight = "Regular", stretch = "Normal", style = "Normal" }) -- /usr/share/fonts/OTF/FiraMonoNerdFont-Regular.otf, FontConfig
 elseif wezterm.target_triple == "x86_64-pc-windows-msvc" then
@@ -38,40 +39,44 @@ config.colors = {
 }
 config.keys = {
     {
+        key = 'F',
+        mods = 'SHIFT|ALT',
+        action = wezterm.action.TogglePaneZoomState,
+    },
+    {
         key = 't',
         mods = 'CTRL|SHIFT',
         action = wezterm.action.SpawnTab 'CurrentPaneDomain',
     },
     -- Create a new tab in the default domain
-    {
-        key = 't',
-        mods = 'CTRL|ALT',
-        action = wezterm.action.SpawnTab 'DefaultDomain',
-    },
-
+    -- {
+    --     key = 't',
+    --     mods = 'CTRL|ALT',
+    --     action = wezterm.action.SpawnTab 'DefaultDomain',
+    -- },
     {
         key = 'w',
         mods = 'SHIFT|ALT',
         action = wezterm.action.CloseCurrentPane { confirm = true },
     },
     {
-        key = 'H',
-        mods = 'SHIFT|ALT',
+        key = 'h',
+        mods = 'CTRL|ALT',
         action = wezterm.action.AdjustPaneSize { 'Left', 5 },
     },
     {
-        key = 'J',
-        mods = 'SHIFT|ALT',
+        key = 'j',
+        mods = 'CTRL|ALT',
         action = wezterm.action.AdjustPaneSize { 'Down', 5 },
     },
     {
-        key = 'K',
-        mods = 'SHIFT|ALT',
+        key = 'k',
+        mods = 'CTRL|ALT',
         action = wezterm.action.AdjustPaneSize { 'Up', 5 }
     },
     {
-        key = 'L',
-        mods = 'SHIFT|ALT',
+        key = 'l',
+        mods = 'CTRL|ALT',
         action = wezterm.action.AdjustPaneSize { 'Right', 5 },
     },
     {
@@ -86,22 +91,22 @@ config.keys = {
     },
     {
         key = 'h',
-        mods = 'CTRL|ALT',
+        mods = 'SHIFT|ALT',
         action = wezterm.action.ActivatePaneDirection 'Left',
     },
     {
         key = 'l',
-        mods = 'CTRL|ALT',
+        mods = 'SHIFT|ALT',
         action = wezterm.action.ActivatePaneDirection 'Right',
     },
     {
         key = 'k',
-        mods = 'CTRL|ALT',
+        mods = 'SHIFT|ALT',
         action = wezterm.action.ActivatePaneDirection 'Up',
     },
     {
         key = 'j',
-        mods = 'CTRL|ALT',
+        mods = 'SHIFT|ALT',
         action = wezterm.action.ActivatePaneDirection 'Down',
     },
 
