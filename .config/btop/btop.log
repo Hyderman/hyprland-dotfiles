@@ -154,3 +154,9 @@ theme[process_start]=
 
 # Process box color gradient for threads, mem and cpu usage (Sapphire -> Mauve)
 theme[process_start]=
+
+2023/07/07 (13:59:59) | ===> btop++ v.1.2.13
+2023/07/07 (13:59:59) | ERROR: Invalid hex value: 89dceb
+
+# Process box color gradient for threads, mem and cpu usage (Sapphire -> Mauve)
+theme[process_start]=
