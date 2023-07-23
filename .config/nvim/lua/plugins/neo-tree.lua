@@ -27,7 +27,18 @@ return {
         -- in the form "LspDiagnosticsSignWarning"
 
         require("neo-tree").setup({
-            vim.keymap.set("n", "ge", "<Cmd>Neotree focus reveal<Cr>"),
+            vim.keymap.set("n", "<Leader>e", "<Cmd>Neotree toggle reveal<Cr>"),
+            event_handlers = {
+
+                {
+                    event = "file_opened",
+                    handler = function(file_path)
+                        --auto close
+                        require("neo-tree").close_all()
+                    end
+                },
+
+            },
             close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
             popup_border_style = "rounded",
             enable_git_status = true,

@@ -82,12 +82,18 @@ config.keys = {
     {
         key = '_',
         mods = 'SHIFT|ALT',
-        action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+        action = wezterm.action.SplitPane {
+            direction = "Right",
+            size = { Percent = 50 },
+        },
     },
     {
         key = '+',
         mods = 'SHIFT|ALT',
-        action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+        action = wezterm.action.SplitPane {
+            direction = "Down",
+            size = { Percent = 33 },
+        },
     },
     {
         key = 'h',

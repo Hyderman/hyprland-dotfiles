@@ -16,11 +16,13 @@ return {
             -- Autocompletion
             { "hrsh7th/nvim-cmp" },
             { "hrsh7th/cmp-nvim-lsp" },
-            { "L3MON4D3/LuaSnip" },
+            { "dcampos/nvim-snippy" },
+            -- { "L3MON4D3/LuaSnip" },
 
             { "p00f/clangd_extensions.nvim" },
         },
         config = function()
+            vim.keymap.set("n", "gh", "<cmd>ClangdSwitchSourceHeader<CR>", { silent = true, noremap = true })
             require("mason").setup({
                 ui = {
                     icons = {
@@ -40,12 +42,42 @@ return {
             local cmp = require('cmp')
             local cmp_action = require('lsp-zero').cmp_action()
 
+            local has_words_before = function()
+                unpack = unpack or table.unpack
+                local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+                return col ~= 0 and
+                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+            end
+
+            local snippy = require("snippy")
+
             cmp.setup({
+                snippet = {
+                    -- REQUIRED - you must specify a snippet engine
+                    expand = function(args)
+                        require('snippy').expand_snippet(args.body) -- For `snippy` users.
+                    end,
+                },
                 mapping = {
                     -- `Enter` key to confirm completion
                     ['<C-f>'] = cmp.mapping.confirm({ select = true }),
-                    ['<Tab>'] = cmp_action.luasnip_supertab(),
-                    ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if snippy.can_expand_or_advance() then
+                            snippy.expand_or_advance()
+                        elseif has_words_before() then
+                            cmp.complete()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
+
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if snippy.can_jump(-1) then
+                            snippy.previous()
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 },
                 sorting = {
                     comparators = {
@@ -81,6 +113,14 @@ return {
                             -- Get the language server to recognize the `vim` global
                             globals = { 'vim' },
                         },
+                        format = {
+                            enable = false,
+                            align_function_params = false,
+                            align_continuous_assign_statement = false,
+                            align_continuous_rect_table_field = false,
+                            align_array_table = false,
+                            align_continuous_inline_comment = false,
+                        },
                         workspace = {
                             -- Make the server aware of Neovim runtime files
                             library = vim.api.nvim_get_runtime_file("", true),
@@ -107,10 +147,10 @@ return {
                 server = {
                     -- options to pass to nvim-lspconfig
                     -- i.e. the arguments to require("lspconfig").clangd.setup({})
-                    cmd = {
-                        "clangd",
-                        "--log=verbose",
-                    }
+                    -- cmd = {
+                    --     "clangd",
+                    --     "--log=verbose",
+                    -- }
                 },
                 extensions = {
                     -- defaults:
