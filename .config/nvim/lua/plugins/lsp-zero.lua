@@ -16,8 +16,8 @@ return {
             -- Autocompletion
             { "hrsh7th/nvim-cmp" },
             { "hrsh7th/cmp-nvim-lsp" },
-            { "dcampos/nvim-snippy" },
-            -- { "L3MON4D3/LuaSnip" },
+            -- { "dcampos/nvim-snippy" },
+            { "L3MON4D3/LuaSnip" },
 
             { "p00f/clangd_extensions.nvim" },
         },
@@ -48,22 +48,30 @@ return {
                 return col ~= 0 and
                     vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
-
-            local snippy = require("snippy")
+            local luasnip = require("luasnip")
+            luasnip.config.set_config({
+                region_check_events = 'InsertEnter',
+                delete_check_events = 'InsertLeave'
+            })
+            -- local snippy = require("snippy")
 
             cmp.setup({
-                snippet = {
-                    -- REQUIRED - you must specify a snippet engine
-                    expand = function(args)
-                        require('snippy').expand_snippet(args.body) -- For `snippy` users.
-                    end,
-                },
+                -- REQUIRED - you must specify a snippet engine
+                -- snippet = {
+                --     expand = function(args)
+                --         require('snippy').expand_snippet(args.body) -- For `snippy` users.
+                --     end,
+                -- },
                 mapping = {
-                    -- `Enter` key to confirm completion
-                    ['<C-f>'] = cmp.mapping.confirm({ select = true }),
+                    -- ['<Tab>'] = cmp_action.luasnip_supertab(),
+                    -- ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
+                    ['<C-f>'] = cmp.mapping.confirm({select = true}),
+                    ['<CR>'] = cmp.mapping.confirm({select = true}),
                     ["<Tab>"] = cmp.mapping(function(fallback)
-                        if snippy.can_expand_or_advance() then
-                            snippy.expand_or_advance()
+                            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
+                            -- they way you will only jump inside the snippet region
+                        if luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
                         elseif has_words_before() then
                             cmp.complete()
                         else
@@ -72,8 +80,10 @@ return {
                     end, { "i", "s" }),
 
                     ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if snippy.can_jump(-1) then
-                            snippy.previous()
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
                         else
                             fallback()
                         end

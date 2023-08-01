@@ -15,6 +15,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 if vim.g.vscode then
+    require("vscode-neovim")
 else
     require("lazy").setup("plugins")
 end
