@@ -157,10 +157,11 @@ return {
                 server = {
                     -- options to pass to nvim-lspconfig
                     -- i.e. the arguments to require("lspconfig").clangd.setup({})
-                    -- cmd = {
-                    --     "clangd",
+                    cmd = {
+                        "clangd",
+                        "--query-driver=**"
                     --     "--log=verbose",
-                    -- }
+                    }
                 },
                 extensions = {
                     -- defaults:

@@ -1,4 +1,5 @@
 [MIME Cache]
+application/x-mcuproject=stm32cubeide_project_importer.desktop;
 application/x-shellscript=nvim.desktop;
 text/english=nvim.desktop;
 text/plain=nvim.desktop;
