@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Windows 11
+Icon=/home/hyderman/Pictures/icons/windows11.png
+Exec=/home/hyderman/.config/scripts/win11_kvm
+Terminal=false
+Type=Application

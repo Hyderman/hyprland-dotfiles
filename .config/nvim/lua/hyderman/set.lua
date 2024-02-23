@@ -1,6 +1,6 @@
 vim.opt.nu = true
+-- vim.opt.guicursor = ""
 vim.opt.relativenumber = true
-
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
@@ -24,3 +24,6 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 
 vim.opt.updatetime = 50
+vim.cmd('autocmd BufEnter * set formatoptions-=ro') -- Autocomment neovim
+vim.cmd('autocmd BufEnter * setlocal formatoptions-=ro')
+vim.api.nvim_command("set cinoptions+=N-s") -- Namespace indent

@@ -8,8 +8,8 @@ return {
             "rcarriga/nvim-dap-ui",
             -- stylua: ignore
             keys = {
-                { "<leader>du", function() require("dapui").toggle({ }) end, desc = "Dap UI" },
-                { "<leader>de", function() require("dapui").eval() end, desc = "Eval", mode = {"n", "v"} },
+                { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
+                { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
             },
             opts = {},
             config = function(_, opts)
@@ -45,8 +45,36 @@ return {
                             terminate = ""
                         },
                     },
-                }
+                    layouts = { {
+                        elements = { {
+                            id = "breakpoints",
+                            size = 0.125
+                        }, {
+                            id = "stacks",
+                            size = 0.125
+                        }, {
+                            id = "watches",
+                            size = 0.125
+                        }, {
+                            id = "scopes",
+                            size = 0.5
+                        } },
+                        position = "left",
+                        size = 50
+                    }, {
+                        elements = { {
+                            id = "repl",
+                            size = 0.5
+                        }, {
+                            id = "console",
+                            size = 0.5
+                        } },
+                        position = "bottom",
+                        size = 10
+                    } },
 
+
+                }
             end,
         },
 
@@ -76,6 +104,7 @@ return {
                 ensure_installed = {
                     -- Update this to ensure that you have the debuggers for the langs you want
                     "cppdbg",
+                    "codelldb",
                     "python",
                 },
             },
@@ -84,22 +113,22 @@ return {
 
     -- stylua: ignore
     keys = {
-        { "<leader>B", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-        { "<leader>b", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
-        { "<leader>dd", function() require("dap").clear_breakpoints() end, desc = "Clear Breakpoints" },
-        { "<F5>", function() require("dap").continue() end, desc = "Continue" },
-        { "<leader>dc", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-        { "<leader>dg", function() require("dap").goto_() end, desc = "Go to line (no execute)" },
-        { "<F11>", function() require("dap").step_into() end, desc = "Step Into" },
-        { "<leader>dj", function() require("dap").down() end, desc = "Down" },
-        { "<leader>dk", function() require("dap").up() end, desc = "Up" },
-        { "<leader>dl", function() require("dap").run_last() end, desc = "Run Last" },
-        { "<F23>", function() require("dap").step_out() end, desc = "Step Out" },
-        { "<F10>", function() require("dap").step_over() end, desc = "Step Over" },
-        { "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
-        { "<leader>ds", function() require("dap").session() end, desc = "Session" },
-        { "<F17>", function() require("dap").terminate() end, desc = "Terminate" },
-        { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+        { "<leader>B",  function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+        { "<leader>b",  function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
+        { "<leader>dd", function() require("dap").clear_breakpoints() end,                                    desc = "Clear Breakpoints" },
+        { "<F5>",       function() require("dap").continue() end,                                             desc = "Continue" },
+        { "<F34>",      function() require("dap").run_to_cursor() end,                                        desc = "Run to Cursor" },
+        { "<leader>dg", function() require("dap").goto_() end,                                                desc = "Go to line (no execute)" },
+        { "<F11>",      function() require("dap").step_into() end,                                            desc = "Step Into" },
+        { "<leader>dj", function() require("dap").down() end,                                                 desc = "Down" },
+        { "<leader>dk", function() require("dap").up() end,                                                   desc = "Up" },
+        { "<leader>dl", function() require("dap").run_last() end,                                             desc = "Run Last" },
+        { "<F23>",      function() require("dap").step_out() end,                                             desc = "Step Out" },
+        { "<F10>",      function() require("dap").step_over() end,                                            desc = "Step Over" },
+        { "<leader>dp", function() require("dap").pause() end,                                                desc = "Pause" },
+        { "<leader>ds", function() require("dap").session() end,                                              desc = "Session" },
+        { "<F17>",      function() require("dap").terminate() end,                                            desc = "Terminate" },
+        { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
     },
 
     config = function()
@@ -114,29 +143,80 @@ return {
         vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped' })
 
         local dap = require('dap')
+        local path
+        local tmp
+        dap.adapters.codelldb = {
+            type = 'server',
+            port = "${port}",
+            executable = {
+                -- CHANGE THIS to your path!
+                command = '/home/hyderman/.local/share/nvim/mason/bin/codelldb',
+                args = { "--port", "${port}", "--settings", '{"showDisassembly" : "never"}' },
+
+                -- On windows you may have to uncomment this:
+                -- detached = false,
+            }
+        }
         dap.configurations.cpp = {
-                {
-                    name = "Launch file",
-                    type = "cppdbg",
-                    request = "launch",
-                    program = function()
-                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/build/', 'file')
-                    end,
-                    cwd = '${workspaceFolder}',
-                    stopAtEntry = true,
-                    setupCommands = {
-                        {
-                            text = '-enable-pretty-printing',
-                            description =  'enable pretty printing',
-                            ignoreFailures = false
-                        },
-                        {
-                            description = "Set Disassembly Flavor to Intel",
-                            text = "-gdb-set disassembly-flavor intel",
-                            ignoreFailures = true
-                        }
-                    },
-                },
+            {
+                name = 'Launch',
+                type = 'codelldb',
+                request = 'launch',
+                program = function()
+                    local cwd = vim.fn.getcwd()
+                    if path ~= nil then
+                        return path
+                    else
+                        if vim.fn.executable(cwd .. '/build/myProject') == 1 then
+                            path = cwd .. '/build/myProject'
+                        else
+                            tmp = vim.fn.input('Path to executable: ', cwd .. '/', 'file')
+                            while vim.fn.filereadable(tmp) ~= 1 do
+                                tmp = vim.fn.input('Path to executable: ', cwd .. '/', 'file')
+                            end
+                            path = tmp
+                        end
+                    end
+                    return path
+                    -- return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+                -- args = {"--settings", '{"showDisassembly" : "never"}'}
+            },
+            -- {
+            --     name = "Launch file",
+            --     type = "cppdbg",
+            --     request = "launch",
+            --     program = function()
+            --         local cwd = vim.fn.getcwd()
+            --         local path
+            --         if path ~= nil then
+            --             return path
+            --         else
+            --             if vim.fn.executable(cwd .. '/build/myProject') == 1 then
+            --                 path = cwd .. '/build/myProject'
+            --             else
+            --                 path = vim.fn.input('Path to executable: ', cwd .. '/build/', 'file')
+            --             end
+            --         end
+            --         return path
+            --     end,
+            --     cwd = '${workspaceFolder}',
+            --     stopAtEntry = true,
+            --     setupCommands = {
+            --         {
+            --             text = '-enable-pretty-printing',
+            --             description =  'enable pretty printing',
+            --             ignoreFailures = false
+            --         },
+            --         {
+            --             description = "Set Disassembly Flavor to Intel",
+            --             text = "-gdb-set disassembly-flavor intel",
+            --             ignoreFailures = true
+            --         }
+            --     },
+            -- },
         }
         dap.configurations.c = dap.configurations.cpp
         dap.configurations.rust = dap.configurations.cpp

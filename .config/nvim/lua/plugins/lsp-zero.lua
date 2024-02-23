@@ -1,7 +1,7 @@
 return {
     {
         "VonHeikemen/lsp-zero.nvim",
-        branch = "v2.x",
+        branch = "v3.x",
         dependencies = {
             -- LSP Support
             { "neovim/nvim-lspconfig" },
@@ -21,8 +21,14 @@ return {
 
             { "p00f/clangd_extensions.nvim" },
         },
+        -- 0.10 neovim feature
+        -- opts = {
+        --     inlay_hints = { enabled = true },
+        -- },
         config = function()
             vim.keymap.set("n", "gh", "<cmd>ClangdSwitchSourceHeader<CR>", { silent = true, noremap = true })
+            vim.keymap.set("n", "ga", "<cmd>lua vim.lsp.buf.code_action({apply = true})<CR>",
+                { noremap = true, silent = true })
             require("mason").setup({
                 ui = {
                     icons = {
@@ -32,15 +38,21 @@ return {
                     }
                 }
             })
-            local lsp = require("lsp-zero").preset({})
+            local lsp_zero = require('lsp-zero')
 
-            lsp.on_attach(function(client, bufnr)
-                lsp.default_keymaps({ buffer = bufnr })
-                lsp.buffer_autoformat()
+            lsp_zero.on_attach(function(client, bufnr)
+                lsp_zero.default_keymaps({ buffer = bufnr })
+                lsp_zero.buffer_autoformat()
+                require("clangd_extensions.inlay_hints").setup_autocmd()
+                require("clangd_extensions.inlay_hints").set_inlay_hints()
             end)
 
             local cmp = require('cmp')
-            local cmp_action = require('lsp-zero').cmp_action()
+            local cmp_format = require('lsp-zero').cmp_format()
+
+            cmp.setup({
+                formatting = cmp_format,
+            })
 
             local has_words_before = function()
                 unpack = unpack or table.unpack
@@ -65,11 +77,13 @@ return {
                 mapping = {
                     -- ['<Tab>'] = cmp_action.luasnip_supertab(),
                     -- ['<S-Tab>'] = cmp_action.luasnip_shift_supertab(),
-                    ['<C-f>'] = cmp.mapping.confirm({select = true}),
-                    ['<CR>'] = cmp.mapping.confirm({select = true}),
+                    ['<C-f>'] = cmp.mapping.confirm({ select = true }),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
                     ["<Tab>"] = cmp.mapping(function(fallback)
-                            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
-                            -- they way you will only jump inside the snippet region
+                        -- if cmp.visible() then
+                        --     cmp.select_next_item()
+                        -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+                        -- they way you will only jump inside the snippet region
                         if luasnip.expand_or_locally_jumpable() then
                             luasnip.expand_or_jump()
                         elseif has_words_before() then
@@ -104,45 +118,20 @@ return {
 
             })
 
-            lsp.ensure_installed({
-                "clangd",
-                "lua_ls",
-                -- "neocmake",
-            })
-
-            lsp.skip_server_setup({ 'clangd' })
-
-            require("lspconfig").lua_ls.setup {
-                settings = {
-                    Lua = {
-                        runtime = {
-                            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-                            version = 'LuaJIT',
-                        },
-                        diagnostics = {
-                            -- Get the language server to recognize the `vim` global
-                            globals = { 'vim' },
-                        },
-                        format = {
-                            enable = false,
-                            align_function_params = false,
-                            align_continuous_assign_statement = false,
-                            align_continuous_rect_table_field = false,
-                            align_array_table = false,
-                            align_continuous_inline_comment = false,
-                        },
-                        workspace = {
-                            -- Make the server aware of Neovim runtime files
-                            library = vim.api.nvim_get_runtime_file("", true),
-                            checkThirdParty = false,
-                        },
-                        -- Do not send telemetry data containing a randomized but unique identifier
-                        telemetry = {
-                            enable = false,
-                        },
-                    },
+            require('mason-lspconfig').setup({
+                ensure_intalled = {
+                    "clangd",
+                    "lua_ls",
+                    "neocmake",
                 },
-            }
+                handlers = {
+                    lsp_zero.default_setup,
+                    lua_ls = function()
+                        local lua_opts = lsp_zero.nvim_lua_ls()
+                        require('lspconfig').lua_ls.setup(lua_opts)
+                    end,
+                }
+            })
 
             --Enable (broadcasting) snippet capability for completion
             local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -151,86 +140,49 @@ return {
                 capabilities = capabilities,
             }
 
-            lsp.setup()
-
-            require("clangd_extensions").setup {
-                server = {
-                    -- options to pass to nvim-lspconfig
-                    -- i.e. the arguments to require("lspconfig").clangd.setup({})
+            require("lspconfig").clangd.setup {
+                cmd = {
+                    "clangd",
+                    "--query-driver=**",
+                    "--function-arg-placeholders=true"
+                }
+            }
+            --     -- Custom LSP setup for clangd
+            local function custom_clangd_setup()
+                require("lspconfig").clangd.setup {
                     cmd = {
                         "clangd",
-                        "--query-driver=**"
-                    --     "--log=verbose",
+                        "--query-driver=**",
+                        "--function-arg-placeholders=true",
+                        "--clang-tidy=false" -- Disable clang-tidy
                     }
-                },
-                extensions = {
-                    -- defaults:
-                    -- Automatically set inlay hints (type hints)
-                    autoSetHints = true,
-                    -- These apply to the default ClangdSetInlayHints command
-                    inlay_hints = {
-                        inline = vim.fn.has("nvim-0.10") == 1,
-                        -- Options other than `highlight' and `priority' only work
-                        -- if `inline' is disabled
-                        -- Only show inlay hints for the current line
-                        only_current_line = false,
-                        -- Event which triggers a refersh of the inlay hints.
-                        -- You can make this "CursorMoved" or "CursorMoved,CursorMovedI" but
-                        -- not that this may cause  higher CPU usage.
-                        -- This option is only respected when only_current_line and
-                        -- autoSetHints both are true.
-                        only_current_line_autocmd = "CursorHold",
-                        -- whether to show parameter hints with the inlay hints or not
-                        show_parameter_hints = true,
-                        -- prefix for parameter hints
-                        parameter_hints_prefix = "<- ",
-                        -- prefix for all the other hints (type, chaining)
-                        other_hints_prefix = "=> ",
-                        -- whether to align to the length of the longest line in the file
-                        max_len_align = false,
-                        -- padding from the left if max_len_align is true
-                        max_len_align_padding = 1,
-                        -- whether to align to the extreme right or not
-                        right_align = false,
-                        -- padding from the right if right_align is true
-                        right_align_padding = 7,
-                        -- The color of the hints
-                        highlight = "Comment",
-                        -- The highlight group priority for extmark
-                        priority = 100,
-                    },
-                    ast = {
-                        role_icons = {
-                            type = "",
-                            declaration = "",
-                            expression = "",
-                            specifier = "",
-                            statement = "",
-                            ["template argument"] = "",
-                        },
+                }
+            end
 
-                        kind_icons = {
-                            Compound = "",
-                            Recovery = "",
-                            TranslationUnit = "",
-                            PackExpansion = "",
-                            TemplateTypeParm = "",
-                            TemplateTemplateParm = "",
-                            TemplateParamObject = "",
-                        },
+            -- Toggle between default and custom LSP setups for clangd
+            local clangd_custom = false
 
-                        highlights = {
-                            detail = "Comment",
-                        },
-                    },
-                    memory_usage = {
-                        border = "none",
-                    },
-                    symbol_info = {
-                        border = "none",
-                    },
-                },
-            }
+            function toggle_clangd_setup()
+                vim.lsp.stop_client(vim.lsp.get_active_clients())
+                if clangd_custom then
+                    -- Activate default setup
+                    require("lspconfig").clangd.setup {
+                        cmd = {
+                            "clangd",
+                            "--query-driver=**",
+                            "--function-arg-placeholders=true",
+                        }
+                    }
+                    clangd_custom = false
+                else
+                    -- Activate custom setup
+                    custom_clangd_setup()
+                    clangd_custom = true
+                end
+            end
+
+            -- Key mapping to toggle LSP setup for clangd
+            vim.api.nvim_set_keymap('n', '<Leader>c', ':lua toggle_clangd_setup()<CR>', { noremap = true, silent = true })
         end
     }
 }

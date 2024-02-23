@@ -1,3 +1,8 @@
 {
-    "workspace.checkThirdParty": false
+    "workspace.checkThirdParty": false,
+    "diagnostics.globals": [
+        "vim",
+        "config",
+        "toggle_clangd_setup"
+    ]
 }

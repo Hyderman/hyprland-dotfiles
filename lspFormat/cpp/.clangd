@@ -1,5 +1,7 @@
 Diagnostics:
     ClangTidy:
+        CheckOptions: 
+          CheckTriviallyCopyableMove: false
         Add: [modernize*, bugprone*, cert*, clang-analyze*, performance*]
         Remove: [
         modernize-use-trailing-return-type,
@@ -8,9 +10,10 @@ Diagnostics:
         cert-err58-cpp,
         bugprone-easily-swappable-parameters,
         modernize-deprecated-headers,
-        modernize-use-nodiscard
+        modernize-use-nodiscard,
+        modernize-loop-convert,
+        performance-no-int-to-ptr,
         ]
-        
-CompileFlags:
-    Add: -Wno-unknown-warning-option 
-    Remove: [-m*, -f*]
+# CompileFlags:
+#     Add: [-Wno-unknown-warning-option, -Wno-old-style-cast]
+#     Remove: [-m*, -f*]

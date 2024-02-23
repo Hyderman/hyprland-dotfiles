@@ -15,7 +15,7 @@ OFFICIAL=$(checkupdates | wc -l)
 
 # If the parameter is "update", update all services
 if [ "$1" = "update" ]; then
-    wezterm start -- sh -c 'paru'
+    wezterm start -- sh -c 'paru -Syu --noconfirm'
     pkill -SIGRTMIN+8 waybar
 fi
 

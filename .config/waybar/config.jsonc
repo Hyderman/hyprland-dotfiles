@@ -10,7 +10,7 @@
     "modules-left": [
         "custom/power_btn",
         "custom/lock_screen",
-        "wlr/workspaces"
+        "hyprland/workspaces"
     ],
     "modules-center": [
         "clock",
@@ -49,23 +49,11 @@
         "tooltip": false
     },
 
-    "wlr/workspaces": {
+    "hyprland/workspaces": {
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "all-outputs": true,
         "on-click": "activate",
-        "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": [],
-            "7": [],
-            "8": [],
-            "9": [],
-            "10": []
-          }
     },
 
     "custom/notification": {
@@ -105,7 +93,7 @@
         "max-length": 10,
         "format-alt-click": "click-right",
         "format-alt": " {usage}%",
-        "on-click": "hyprctl dispatch exec [float] wezterm start btop"
+        "on-click": "hyprctl dispatch -- exec [float] wezterm start --always-new-process btop"
     },
 
     "custom/updates": {

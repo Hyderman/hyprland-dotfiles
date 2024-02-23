@@ -1,0 +1,4 @@
+#!/bin/bash
+
+MESSAGE=$(sudo virsh start win11 2>&1)
+notify-send -u "normal" -i "/home/hyderman/Pictures/icons/windows11.png" "$MESSAGE"
