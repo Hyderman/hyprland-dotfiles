@@ -9,13 +9,12 @@
     "spacing": 0,
     "modules-left": [
         "custom/power_btn",
-        "custom/lock_screen",
+        // "custom/lock_screen",
         "hyprland/workspaces"
     ],
     "modules-center": [
         "clock",
         "idle_inhibitor",
-        "custom/updates"
     ],
     "modules-right": [
         "cpu",
@@ -23,7 +22,6 @@
         "pulseaudio#microphone",
         "tray",
         "custom/power_profile",
-        // "battery",
         "custom/notification",
     ],
 
@@ -42,12 +40,12 @@
         "tooltip": false
     },
 
-    "custom/lock_screen": {
-        "format": "",
-        "on-click": "sh -c '(sleep 0.1; ~/.config/scripts/lock)' & disown ",
-
-        "tooltip": false
-    },
+    // "custom/lock_screen": {
+    //     "format": "",
+    //     "on-click": "sh -c '(sleep 0.1; ~/.config/scripts/lock)' & disown ",
+    //
+    //     "tooltip": false
+    // },
 
     "hyprland/workspaces": {
         "on-scroll-up": "hyprctl dispatch workspace e+1",
@@ -78,7 +76,7 @@
     },
 
 	"clock": {
-		"format": "{:%a %d %H:%M}",
+		"format": "{:%a %d %b %H:%M}",
 		"tooltip": "false",
 	},
 
@@ -96,14 +94,14 @@
         "on-click": "hyprctl dispatch -- exec [float] wezterm start --always-new-process btop"
     },
 
-    "custom/updates": {
-        "format": "{}",
-        "exec": "~/.config/scripts/waybarScripts/update-sys",
-        "on-click": "~/.config/scripts/waybarScripts/update-sys update",
-        "interval": "once",
-        "signal": 8,
-        "tooltip": true
-    },
+    // "custom/updates": {
+    //     "format": "{}",
+    //     "exec": "~/.config/scripts/waybarScripts/update-sys",
+    //     "on-click": "~/.config/scripts/waybarScripts/update-sys update",
+    //     "interval": "once",
+    //     "signal": 8,
+    //     "tooltip": true
+    // },
 
     "pulseaudio": {
         "format": "{icon}",

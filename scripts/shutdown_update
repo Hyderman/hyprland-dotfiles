@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Update Arch Linux
+echo "Updating Arch Linux..."
+wezterm start -- sh -c 'paru -Syu --noconfirm'; systemctl poweroff
+
+# Check if the update was successful
+if [ $? -eq 0 ]; then
+    echo "Update successful. Shutting down the system..."
+    sudo shutdown now
+else
+    echo "Update failed. Please check for errors."
+fi
+

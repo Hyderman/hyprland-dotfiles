@@ -1,6 +1,6 @@
 {
     "label" : "lock",
-    "action" : "~/.config/scripts/lock",
+    "action" : "hyprlock",
     "text" : "Lock",
     "keybind" : "l"
 }
@@ -12,7 +12,7 @@
 }
 {
     "label" : "shutdown",
-    "action" : "systemctl poweroff",
+    "action" : "wezterm start -- sh -c 'paru -Syu --noconfirm; systemctl poweroff'",
     "text" : "Shutdown",
     "keybind" : "s"
 }

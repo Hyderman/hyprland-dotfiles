@@ -139,7 +139,7 @@ config.keys = {
 
 }
 for i = 1, 8 do
-    -- CTRL+ALT + number to activate that tab
+    -- ALT + number to activate that tab
     table.insert(config.keys, {
         key = tostring(i),
         mods = 'ALT',
